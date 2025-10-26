@@ -1,11 +1,12 @@
 import SearchBar from "./SearchBar";
 import ErrorBoundary from "./ErrorBoundary";
 import { genres } from "../data.js";
-import { useState } from "react";
 
 export default function Header({ onSearch, onFilterChange, onSortChange }) {
   const sorts = ["A-Z", "Z-A", "Newest", "Oldest"];
-  const filters = ["All", "Technology", "Education", "Entertainment"];
+
+  // Dynamically generate filter options from the data file
+  const filters = ["All", ...genres.map((g) => g.title)];
 
   return (
     <header className="app-header">
