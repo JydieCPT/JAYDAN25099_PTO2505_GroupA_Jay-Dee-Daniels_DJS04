@@ -9,7 +9,22 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // New state for filters/search
+  /**
+ * React state and effect for managing podcasts search, filter, and sort.
+ *
+ * State:
+ * @type {[string, Function]} searchQuery - Current search input for podcast titles.
+ * @type {[string, Function]} filter - Currently selected genre filter, default is "All".
+ * @type {[string, Function]} sort - Currently selected sort option, default is "A-Z".
+ *
+ * Effect:
+ * useEffect(() => { ... }, [])
+ * - Fetches the list of podcasts on component mount.
+ * - Updates state via setPodcasts, and handles loading and error states.
+ *
+ * Dependencies: empty array [], so this runs only once when the component mounts.
+ */
+
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("All");
   const [sort, setSort] = useState("A-Z");
@@ -18,7 +33,21 @@ export default function App() {
     fetchPodcasts(setPodcasts, setError, setLoading);
   }, []);
 
-  // Filter + sort logic
+  /**
+ * Filters and sorts the list of podcasts based on search query, selected filter, and sort option.
+ *
+ * @param {Object[]} podcasts - Array of podcast objects to be filtered and sorted.
+ * @param {string} searchQuery - The current search input used to match podcast titles (case-insensitive).
+ * @param {string} filter - The currently selected genre filter ("All" matches everything).
+ * @param {string} sort - The currently selected sort option ("A-Z", "Z-A", "Newest", "Oldest").
+ * @param {Object[]} genres - Array of genre objects ({ id, title }) used to match podcast genres.
+ * @returns {Object[]} Filtered and sorted array of podcasts.
+ *
+ * @example
+ * const result = podcasts
+ *   .filter(p => ...)
+ *   .sort((a, b) => ...);
+ */
   const filtered = podcasts
     .filter((p) => {
       const titleMatch = p.title.toLowerCase().includes(searchQuery.toLowerCase());

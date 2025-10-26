@@ -1,5 +1,32 @@
 import { useState, useEffect } from "react";
 
+/**
+ * SearchBar Component
+ *
+ * A reusable search bar component that includes:
+ * - A text input with predictive search suggestions.
+ * - Dropdown filters and sorting options.
+ * - Callback handlers for search, filter, and sort actions.
+ *
+ * @component
+ * @param {Object[]} data - The dataset to search within.
+ * @param {string[]} filters - List of available filter options.
+ * @param {string[]} sorts - List of available sort options.
+ * @param {Function} onSearch - Callback fired on search input change or suggestion selection.
+ * @param {Function} onFilterChange - Callback fired when the selected filter changes.
+ * @param {Function} onSortChange - Callback fired when the selected sort option changes.
+ *
+ * @example
+ * <SearchBar
+ *   data={podcasts}
+ *   filters={["All", "Technology", "Business"]}
+ *   sorts={["Newest", "A–Z"]}
+ *   onSearch={(query) => console.log(query)}
+ *   onFilterChange={(filter) => console.log(filter)}
+ *   onSortChange={(sort) => console.log(sort)}
+ * />
+ */
+
 const SearchBar = ({
   data = [],
   filters = [],
@@ -104,6 +131,11 @@ const SearchBar = ({
   );
 };
 
+/**
+ * Inline style definitions for the SearchBar component.
+ * Used for layout and consistent UI styling.
+ * @type {Object<string, React.CSSProperties>}
+ */
 const styles = {
   container: {
     display: "flex",

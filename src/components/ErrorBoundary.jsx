@@ -1,3 +1,16 @@
+/**
+ * @file ErrorBoundary.jsx
+ * @description
+ * A React class component that acts as an error boundary. It catches JavaScript errors
+ * in its child component tree, logs the errors to the console, and renders a fallback UI
+ * instead of crashing the whole application. Useful for isolating component errors and
+ * maintaining app stability.
+ *
+ * @example
+ * <ErrorBoundary>
+ *   <PodcastGrid />
+ * </ErrorBoundary>
+ */
 import React from "react";
 
 class ErrorBoundary extends React.Component {
