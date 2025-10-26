@@ -1,28 +1,30 @@
 import { useState, useEffect } from "react";
 
-const SearchBar = ({ data = [], filters = [], sorts = [], onSearch, onFilterChange, onSortChange }) => {
+const SearchBar = ({
+  data = [],
+  filters = [],
+  sorts = [],
+  onSearch,
+  onFilterChange,
+  onSortChange,
+}) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(filters[0] || "");
   const [selectedSort, setSelectedSort] = useState(sorts[0] || "");
 
-  // Predictive suggestions (based on data)
+  // Predictive suggestions
   useEffect(() => {
-    if (query.trim() === "") {
+    if (!query.trim()) {
       setSuggestions([]);
       return;
     }
-    const lowerQuery = query.toLowerCase();
-   const matches = data
-    .filter(item => {
-      if (typeof item === "string") {
-        return item.toLowerCase().includes(lowerQuery);
-      } else if (item.title) {
-        return item.title.toLowerCase().includes(lowerQuery);
-      }
-      return false;
-    })
-    .slice(0, 5);
+
+    const lower = query.toLowerCase();
+    const matches = data
+      .filter((item) => item.title.toLowerCase().includes(lower))
+      .slice(0, 5);
+
     setSuggestions(matches);
   }, [query, data]);
 
@@ -33,9 +35,9 @@ const SearchBar = ({ data = [], filters = [], sorts = [], onSearch, onFilterChan
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setQuery(suggestion);
+    setQuery(suggestion.title);
     setSuggestions([]);
-    onSearch(suggestion);
+    onSearch(suggestion.title);
   };
 
   const handleFilterChange = (e) => {
@@ -50,70 +52,94 @@ const SearchBar = ({ data = [], filters = [], sorts = [], onSearch, onFilterChan
 
   return (
     <div className="search-bar-container" style={styles.container}>
-      {/* Search Input */}
+      <span style={styles.label}>Filter by:</span>
+
+      <select
+        value={selectedFilter}
+        onChange={handleFilterChange}
+        style={styles.select}
+      >
+        {filters.map((f, i) => (
+          <option key={i} value={f}>
+            {f}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={selectedSort}
+        onChange={handleSortChange}
+        style={styles.select}
+      >
+        {sorts.map((s, i) => (
+          <option key={i} value={s}>
+            {s}
+          </option>
+        ))}
+      </select>
+
       <div style={styles.inputWrapper}>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search podcasts..."
           value={query}
           onChange={handleInputChange}
           style={styles.input}
         />
-
-        {/* Predictive Text Suggestions */}
         {suggestions.length > 0 && (
           <ul style={styles.suggestions}>
             {suggestions.map((s, i) => (
-              <li key={i} style={styles.suggestionItem} onClick={() => handleSuggestionClick(s)}>
-                {s}
+              <li
+                key={i}
+                style={styles.suggestionItem}
+                onClick={() => handleSuggestionClick(s)}
+              >
+                {s.title}
               </li>
             ))}
           </ul>
         )}
       </div>
-
-      {/* Filter Dropdown */}
-      <select value={selectedFilter} onChange={handleFilterChange} style={styles.select}>
-        {filters.map((f, i) => (
-          <option key={i} value={f}>{f}</option>
-        ))}
-      </select>
-
-      {/* Sort Dropdown */}
-      <select value={selectedSort} onChange={handleSortChange} style={styles.select}>
-        {sorts.map((s, i) => (
-          <option key={i} value={s}>{s}</option>
-        ))}
-      </select>
     </div>
   );
 };
 
-// Basic inline styling
 const styles = {
   container: {
     display: "flex",
     gap: "10px",
-    alignItems: "flex-start",
-    position: "relative",
-    width: "100%",
-    maxWidth: "600px",
-    margin: "0 auto",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: "1rem 0",
+    borderBottom: "1px solid #e5e7eb",
+    background: "#fafafa",
+    flexWrap: "wrap",
+  },
+  label: {
+    fontWeight: 500,
+    color: "#555",
   },
   inputWrapper: {
     position: "relative",
     flex: 1,
+    maxWidth: "300px",
   },
   input: {
     width: "100%",
-    padding: "10px",
+    padding: "8px 12px",
     borderRadius: "6px",
     border: "1px solid #ccc",
     outline: "none",
   },
+  select: {
+    padding: "8px 12px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+    background: "white",
+  },
   suggestions: {
     position: "absolute",
-    top: "40px",
+    top: "38px",
     left: 0,
     right: 0,
     background: "white",
@@ -128,12 +154,6 @@ const styles = {
   suggestionItem: {
     padding: "8px 10px",
     cursor: "pointer",
-  },
-  select: {
-    padding: "10px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    background: "white",
   },
 };
 
