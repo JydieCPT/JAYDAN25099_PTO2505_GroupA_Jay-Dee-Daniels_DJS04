@@ -22,7 +22,6 @@ export default function Header() {
       <h1>🎙️ Podcast App</h1>
       <div style={{ padding: "20px" }}>
         <ErrorBoundary>
-          <h1>Podcast Search</h1>
             <SearchBar
               data={genres}
               filters={filters}

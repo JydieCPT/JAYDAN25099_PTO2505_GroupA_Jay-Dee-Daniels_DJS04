@@ -10,11 +10,14 @@ body {
 
 .app-header {
   display: flex;
-  justify-content: space-between;
-  padding: 1rem;
+  flex-direction: column; /* Stack title and filters vertically */
+  align-items: flex-start; /* Align everything to the left */
+  gap: 1rem;
+  padding: 1.5rem;
   background: white;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
+
 
 .grid {
   display: grid;
